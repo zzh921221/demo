@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.my.segmentation.mapper.CoinIndexMapper" >
+
+    <insert id="insertData" parameterType="com.my.segmentation.domain.CoinIndex">
+        insert into coin_index(id,coinType,userId)
+        values (
+          #{id},#{coinType},#{userId}
+        )
+    </insert>
+
+    <select id="selectCoinIndexPage" parameterType="com.my.segmentation.dto.AssetWalletReqDTO" resultType="com.my.segmentation.domain.CoinIndex">
+        select id,coinType,userId
+        from coin_index
+        <where>
+            <if test="null != userId">
+                and userId = #{userId}
+            </if>
+        </where>
+        limit #{startRow},#{pageSize}
+    </select>
+
+    <select id="selectCountCoinIndex" resultType="java.lang.Long">
+        select count(id)
+        from coin_index
+        <where>
+            <if test="null != userId">
+                and userId = #{userId}
+            </if>
+        </where>
+    </select>
+</mapper>

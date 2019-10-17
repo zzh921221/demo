@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.panicbuying.mapper.GoodsMapper" >
+  <update id="initGoodsStock">
+    update goods set goods_stock = 17;
+  </update>
+
+  <update id="updateGoodsStockByGoodsCode" parameterType="java.lang.Long">
+    update goods set goods_stock = goods_stock-1
+    where goods_code = #{goodsCode} and goods_stock > 0
+  </update>
+
+  <select id="selectAllGoods" resultType="com.panicbuying.domain.Goods">
+    select id,goods_name,goods_code,goods_stock from goods
+  </select>
+</mapper>

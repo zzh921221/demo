@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.my.segmentation.mapper.TableStateMapper" >
+
+    <select id="selectByTableName" parameterType="java.lang.String" resultType="com.my.segmentation.domain.TableState">
+        select id,`count`,`max`,`min`
+        from table_state
+        where tableName = #{tableName}
+    </select>
+</mapper>

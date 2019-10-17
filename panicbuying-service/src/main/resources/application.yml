@@ -1,0 +1,86 @@
+
+server:
+  port: 1111
+#  servlet:
+#    context-path: /ui2
+#  session:
+#    cookie:
+#      name: UI2SESSION
+#security:
+#  basic:
+#    enabled: false
+#  oauth2:
+#    client:
+#      clientId: SampleClientId
+#      clientSecret: secret
+#      accessTokenUri: http://localhost:8081/auth/oauth/token
+#      userAuthorizationUri: http://localhost:8081/auth/oauth/authorize
+#    resource:
+#      #        userInfoUri: http://localhost:8081/auth/user/me
+#      userInfoUri: http://localhost:8081/antu/user/login
+#  spring.boot.admin.client.url=http://localhost:8080
+
+spring:
+  application:
+    name: demo
+#MYSQL
+  datasource:
+    url: jdbc:mysql://localhost:3306/localdb?useUnicode=true&characterEncoding=UTF-8&useCompression=true&autoReconnect=true&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+# redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    database: 1
+
+  rabbitmq:
+    host: 127.0.0.1
+    username: admin
+    password: 123456
+    port: 5672
+
+# mongoDB
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017
+      database: 1
+#elasticsearch搜索引擎
+    elasticsearch:
+      cluster-name: my-application #默认为elasticsearch
+      cluster-nodes: 127.0.0.1:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+      properties:
+        path:
+          logs: D:/elasticsearch/log #elasticsearch日志存储目录
+          data: D:/elasticsearch/data #elasticsearch数据存储目录
+# 日志
+logging:
+  config: classpath:logback-spring.xml
+  path: D:/log
+
+# mybatis
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+debug: true
+
+eureka:   #<1>
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:10001/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  #<2>
+  endpoint:
+    health:
+      show-details: ALWAYS

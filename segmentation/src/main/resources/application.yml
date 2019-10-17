@@ -1,0 +1,54 @@
+
+server:
+  port: 1112
+#  servlet:
+#    context-path: /ui2
+#  session:
+#    cookie:
+#      name: UI2SESSION
+#security:
+#  basic:
+#    enabled: false
+#  oauth2:
+#    client:
+#      clientId: SampleClientId
+#      clientSecret: secret
+#      accessTokenUri: http://localhost:8081/auth/oauth/token
+#      userAuthorizationUri: http://localhost:8081/auth/oauth/authorize
+#    resource:
+#      #        userInfoUri: http://localhost:8081/auth/user/me
+#      userInfoUri: http://localhost:8081/antu/user/login
+#  spring.boot.admin.client.url=http://localhost:8080
+
+spring:
+  application:
+    name: segmentation
+#MYSQL
+#  datasource:
+#    url: jdbc:mysql://localhost:8066/TESTDB?useUnicode=true&characterEncoding=UTF-8&useCompression=true&autoReconnect=true&useSSL=false
+#    username: root
+#    password: 123456
+#    driver-class-name: com.mysql.jdbc.Driver
+  datasource:
+    url: jdbc:mysql://rm-bp1jesip4z8r4b03zoo.mysql.rds.aliyuncs.com:3306/youzi?useUnicode=true&characterEncoding=UTF-8&useCompression=true&autoReconnect=true&useSSL=false
+    username: zhaozhonghui
+    password: '@31415926a'
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+# mybatis
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  #<2>
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+

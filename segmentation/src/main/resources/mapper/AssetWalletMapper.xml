@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.my.segmentation.mapper.AssetWalletMapper" >
+
+  <update id="createAssetWalletTable" parameterType="java.lang.String">
+    create table ${tableName}
+    (
+       id                   bigint not null auto_increment comment 'ID',
+       userId               int comment '用户ID',
+       coinId               int comment '货币ID',
+       amount               decimal(30,8) comment '账户余额',
+       amountFrozen         decimal(30,8) comment '账户冻结金额',
+       coinInAddress        varchar(255) comment '充币地址',
+       createTime           bigint comment '创建时间',
+       updateTime           bigint comment '修改时间',
+       primary key (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='资产钱包';
+  </update>
+
+    <insert id="insertData" >
+        insert into ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="assetWallet.id != null" >
+                id,
+            </if>
+            <if test="assetWallet.userId != null" >
+                userId,
+            </if>
+            <if test="assetWallet.coinId != null" >
+                coinId,
+            </if>
+            <if test="assetWallet.amount != null" >
+                amount,
+            </if>
+            <if test="assetWallet.amountFrozen != null" >
+                amountFrozen,
+            </if>
+            <if test="assetWallet.coinInAddress != null" >
+                coinInAddress,
+            </if>
+                createTime,
+                updateTime
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="assetWallet.id != null" >
+                #{assetWallet.id},
+            </if>
+            <if test="assetWallet.userId != null" >
+                #{assetWallet.userId},
+            </if>
+            <if test="assetWallet.coinId != null" >
+                #{assetWallet.coinId},
+            </if>
+            <if test="assetWallet.amount != null" >
+                #{assetWallet.amount},
+            </if>
+            <if test="assetWallet.amountFrozen != null" >
+                #{assetWallet.amountFrozen},
+            </if>
+            <if test="assetWallet.coinInAddress != null" >
+                #{assetWallet.coinInAddress},
+            </if>
+            unix_timestamp(now()),
+            unix_timestamp(now())
+        </trim>
+    </insert>
+
+    <select id="checkTable" parameterType="java.lang.String" resultType="java.lang.String">
+         show tables like #{tableName};
+    </select>
+
+    <select id="selectAssetWallet" resultType="com.my.segmentation.domain.AssetWallet" parameterType="com.my.segmentation.dto.AssetWalletReqDTO">
+        select id,userId,coinId,amount,amountFrozen,coinInAddress,createTime,updateTime
+        from total_asset_wallet
+        <where>
+            <if test="null != userId">
+                and userId = #{userId}
+            </if>
+            <if test="null != coinId">
+                and coinId = #{coinId}
+            </if>
+            <if test="null != coinInAddress and coinInAddress != ''">
+                and coinInAddress = #{coinInAddress}
+            </if>
+        </where>
+        order by userId
+    </select>
+
+    <select id="selectAssetWalletPage" resultType="com.my.segmentation.domain.AssetWallet">
+        select id,userId,coinId,amount,amountFrozen,coinInAddress,createTime,updateTime
+        from ${tableName}
+        <where>
+            <if test="null != assetWallet.userId">
+                and userId = #{assetWallet.userId}
+            </if>
+            <if test="null != assetWallet.coinId">
+                and coinId = #{assetWallet.coinId}
+            </if>
+            <if test="null != assetWallet.coinInAddress and assetWallet.coinInAddress != ''">
+                and coinInAddress = #{assetWallet.coinInAddress}
+            </if>
+        </where>
+        order by userId
+        <if test="null != assetWallet.index">
+          limit #{assetWallet.index}, #{assetWallet.pageSize}
+        </if>
+    </select>
+
+    <select id="selectAssetWalletById" resultType="com.my.segmentation.domain.AssetWallet">
+        select id,userId,coinId,amount,amountFrozen,coinInAddress,createTime,updateTime
+        from ${tableName}
+        <where>
+            <if test="null != assetWallet.userId">
+                and userId = #{assetWallet.userId}
+            </if>
+            <if test="null != assetWallet.coinId">
+                and coinId = #{assetWallet.coinId}
+            </if>
+            <if test="null != assetWallet.coinInAddress and assetWallet.coinInAddress != ''">
+                and coinInAddress = #{assetWallet.coinInAddress}
+            </if>
+            <if test="null != minId and null != maxId">
+                and userId between #{minId} and #{maxId}
+            </if>
+        </where>
+    </select>
+
+    <select id="countAssetWalletPage" resultType="java.lang.Long">
+        select count(id)
+        from ${tableName}
+        <where>
+            <if test="null != assetWallet.userId">
+                and userId = #{assetWallet.userId}
+            </if>
+            <if test="null != assetWallet.coinId">
+                and coinId = #{assetWallet.coinId}
+            </if>
+            <if test="null != assetWallet.coinInAddress and assetWallet.coinInAddress != ''">
+                and coinInAddress = #{assetWallet.coinInAddress}
+            </if>
+        </where>
+    </select>
+
+    <insert id="batchInsertDataToTotal" parameterType="java.util.List" >
+        insert into total_asset_wallet (
+            id, userId, coinId, amount, amountFrozen, coinInAddress,
+            createTime, updateTime)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id},#{item.userId},#{item.coinId},#{item.amount},#{item.amountFrozen},#{item.coinInAddress},
+            unix_timestamp(now()),unix_timestamp(now()) )
+        </foreach>
+    </insert>
+
+    <select id="selectAssetWalletCount" resultType="java.lang.Long">
+        select count(id) from total_asset_wallet;
+    </select>
+
+    <delete id="batchDeleteDataFromTotal" parameterType="java.util.List">
+        delete from total_asset_wallet
+        where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+    </delete>
+
+    <select id="selectLastId" resultType="com.my.segmentation.domain.AssetWallet">
+        select id
+        from total_asset_wallet
+        order by updateTime
+        limit ${limit}
+    </select>
+
+
+    <select id="selectByTableAndId" resultType="com.my.segmentation.domain.AssetWallet" >
+        select id,userId,coinId,amount,amountFrozen,coinInAddress,createTime,updateTime
+        from ${tableName}
+        where id =#{id}
+    </select>
+</mapper>

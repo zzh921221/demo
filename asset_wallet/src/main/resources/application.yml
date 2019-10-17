@@ -1,0 +1,47 @@
+spring:
+  #  redis:
+  #    database: 1
+  #    cluster:
+  #      nodes: 192.168.1.31:7000,192.168.1.31:7001,192.168.1.31:7002,192.168.1.32:7000,192.168.1.32:7001,192.168.1.32:7002
+  #    password: admin123
+  #    timeout: 10000
+  #    jedis:
+  #      pool:
+  #        max-active: 100
+  #        max-wait: 5000
+  #        max-idle: 8
+  #        min-idle: 0
+  redis:
+    host: 127.0.0.1
+    #    host: 192.168.1.122
+    port: 6379
+    password: 123456
+    database: 1
+  data:
+    mongodb:
+      #      authentication-database: admin
+      #      host: 192.168.1.33
+      #      port: 20000
+      #      #      username: admin
+      #      #      password: okok
+      #      database: yobtc-bdd
+
+      host: 192.168.1.112
+#      uri: mongodb://192.168.1.112:27017,192.168.1.112:27027/yobtc-bdd?slaveOk=true&replicaSet=myset&write=1&readPreference=secondaryPreferred&connectTimeoutMS=30000
+      username: admin
+      password: okok
+      database: yobtc-bdd
+  application:
+    name: asset-wallet-service
+#  data:
+#    mongodb:
+#      uri: mongodb://127.0.0.1:27017
+#      database: my_mongo
+server:
+  port: 1112
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:10001/eureka/

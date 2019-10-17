@@ -1,0 +1,10 @@
+server:
+  port: 1000
+#spring:
+#  data:
+#    elasticsearch:
+#      cluster-name: my-application
+#      cluster-nodes: localhost:9200
+
+elasticsearch:
+  ip: 192.168.1.112:9200
