@@ -1,0 +1,90 @@
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      #单个数据的大小
+      max-file-size: 200Mb
+      max-request-size: 500Mb
+  redis:
+    database: 0
+    host: 192.168.1.29
+    port: 16379
+    password: admin123
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 100
+        max-wait: 5000
+        max-idle: 20
+        min-idle: 5
+  data:
+    mongodb:
+#      authentication-database: admin
+      host: 192.168.1.33
+      port: 20000
+#      username: admin
+#      password: okok
+      database: yobtc-bdd
+  rabbitmq:
+    host: 192.168.1.29
+    port: 5672
+    username: admin
+    password: 123456
+  datasource:
+    url: jdbc:mysql://192.168.1.21:8066/yobtc-bdd-db?useUnicode=true&characterEncoding=UTF-8&useCompression=true
+    username: root
+    password: okok
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+
+# 该配置是让Hystrix的超时时间改为10秒(可全局配置,也可以通过服务名针对某一个服务进行单独配置)
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 90000
+# 该配置是让ribbon请求接口的时候如果超时则进行重新发送请求(可全局配置,也可以通过服务名针对某一个服务进行单独配置)
+ribbon:
+  MaxAutoRetriesNextServer: 3
+  MaxAutoRetries: 0
+  ConnectTimeout: 6000
+  ReadTimeout: 60000
+# 对请求与响应进行GZIP压缩
+feign:
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml;application/xml;application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+#OSS配置
+s3:
+  bucketName: data.huohuo.com
+  privateBucket: huohuo-private
+#超级管理员
+sysManager:
+  mobile: 15150031393
+  assetMobile: 15150031393
+#jwt token
+jwt:
+  secretKey: GEHYGOD4EDSO95PPBY3RNACHDHS10ZXRSD4LWA88SK
+elasticsearch:
+  config:
+    address: 192.168.1.55
+    port: 9300
+    password:
+    clusterName:
+hessian:
+  host: 192.168.1.116
+  port: 8081
+  ssl-enable: false
+  connectTimeout: 3000
+  readTimeout: 6000
