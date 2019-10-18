@@ -32,9 +32,12 @@ spring:
     username: admin
     password: 123456
   datasource:
-    url: jdbc:mysql://192.168.1.21:8066/yobtc-bdd-db?useUnicode=true&characterEncoding=UTF-8&useCompression=true
-    username: root
-    password: okok
+#    url: jdbc:mysql://192.168.1.21:8066/yobtc-bdd-db?useUnicode=true&characterEncoding=UTF-8&useCompression=true
+#    username: root
+#    password: okok
+    url: rm-bp1jesip4z8r4b03zoo.mysql.rds.aliyuncs.com/yobtc-bdd-db?useUnicode=true&characterEncoding=UTF-8&useCompression=true
+    username: zhaozhonghui
+    password: @31415926a
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
